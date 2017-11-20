@@ -1,0 +1,13 @@
+<template>
+  <h1 class="card-panel">Available Pools</h1>
+  <h1 if.bind="error" click.delegate="activate()" class="card-panel red lighten-1">Couldn't retrieve data. Wanna try again?</h1>
+  <div if.bind="data" class="row">
+    <a class="col-md6 col-sm12" repeat.for="pool of data.pools" route-href="route.bind:'pool'; params.bind:{id: pool.id}">
+      <md-card md-title.bind="pool.coin.type">
+        <div>
+    ${pool | stringify}
+        </div>
+      </md-card>
+    </a>
+  </div>
+</template>

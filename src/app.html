@@ -1,0 +1,23 @@
+<template>
+  <md-navbar>
+    <a href="/" class="brand-logo left"><span>${router.title}</span></a>
+    <ul class="right">
+      <li md-waves repeat.for="nav of router.navigation" class="hide-on-med-and-down ${nav.isActive? 'active':''}">
+        <a href.bind="nav.href">${nav.title}</a>
+      </li>
+      <li md-sidenav-collapse="ref.bind: sideNav;" md-waves><a class="mdi mdi-menu hide-on-large-only"></a></li>
+    </ul>
+  </md-navbar>
+  <md-sidenav view-model.ref="sideNav" md-edge="right" md-close-on-click="true">
+    <ul>
+      <li md-waves repeat.for="nav of router.navigation" class="${nav.isActive? 'active':''}">
+        <a href.bind="nav.href">${nav.title}</a>
+      </li>
+    </ul>
+  </md-sidenav>
+  <main class="container">
+    <full-loader></full-loader>
+    <router-view></router-view>
+  </main>
+
+</template>
