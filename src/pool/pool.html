@@ -1,1 +1,16 @@
-<template></template>
+<template>
+  <require from="./pool-blocks/pool-blocks"></require>
+  <require from="./pool-payments/pool-payments"></require>
+  <require from="./miner-stats/miner-stats"></require>
+  <require from="./pool-stats/pool-stats"></require>
+  <h1 class="card-panel">${id} Pool</h1>
+
+  <pool-blocks id.bind="id"></pool-blocks>
+  <pool-stats id.bind="id"></pool-stats>
+  <pool-payments id.bind="id"></pool-payments>
+  <md-input md-label="Check Your Miner Wallet" md-value.bind="minerNew"></md-input>
+  <a route-href="route.bind:'poolminer'; params.bind:{id: id, miner: minerNew}">
+    <button md-button="flat:bind;" if.bind="minerNew">Check</button>
+  </a>
+  <pool-stats if.bind="miner" id.bind="id" miner.id="miner"></pool-stats>
+</template>

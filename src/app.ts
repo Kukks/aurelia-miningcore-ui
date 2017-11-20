@@ -9,11 +9,7 @@ export class App implements ConfiguresRouter {
 
   public static Routes: RouteConfig[] = [
     {
-      route: '/',
-      redirect: 'pools'
-    },
-    {
-      route: ['pools/'],
+      route: ['/','pools/'],
       name: 'pools',
       moduleId: PLATFORM.moduleName('./pools/pools'),
       nav: true,
@@ -21,11 +17,19 @@ export class App implements ConfiguresRouter {
       settings: {}
     },
     {
-      route: ['pools1/:id'],
+      route: ['pools/:id'],
       name: 'pool',
       moduleId: PLATFORM.moduleName('./pool/pool'),
       nav: false,
       title: 'Pool',
+      settings: {}
+    },
+    {
+      route: ['pools/:id/:miner'],
+      name: 'poolminer',
+      moduleId: PLATFORM.moduleName('./pool/pool'),
+      nav: false,
+      title: 'Pool Miner',
       settings: {}
     }
   ];
@@ -40,6 +44,7 @@ export class App implements ConfiguresRouter {
 
   public configureRouter(config: RouterConfiguration, router: Router): void | Promise<void> | PromiseLike<void> {
     config.options.pushState = true;
+    config.title = "Sexual Mining Pool";
     const routes = App.Routes;
     config.map(routes);
 

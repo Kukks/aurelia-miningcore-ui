@@ -6,6 +6,10 @@ import {HttpResponseMessage} from "aurelia-http-client";
 @autoinject
 export class Pools {
 
+  public get baseUrl():string{
+    return window.location.hostname;
+  }
+
   public data?: PoolsApiResult;
   public error: boolean = false;
 
@@ -19,7 +23,7 @@ export class Pools {
     this.loadingService.toggleLoading(true);
     this.apiClientService.http.get("pools").then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
-        this.data = value.response;
+        this.data = value.content;
       } else {
         this.error = true;
       }

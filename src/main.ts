@@ -15,6 +15,7 @@ export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .plugin(PLATFORM.moduleName('aurelia-materialize-bridge'), b => b.useAll())
+    // .plugin(PLATFORM.moduleName("aurelia-chart"))
     .feature(PLATFORM.moduleName('resources/index'));
 
   // Uncomment the line below to enable animation.

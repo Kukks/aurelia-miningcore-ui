@@ -1,14 +1,15 @@
 import {autoinject} from "aurelia-framework";
-import {ApiClientService} from "../resources/services/api-client.service";
-
 @autoinject
-export class Pool {
+export class PoolPage {
 
-  constructor(private apiClientService: ApiClientService){
+  public id: string;
+  public miner: string;
 
+  public activate(params: {id: string, miner?:string}) {
+    this.id = params.id;
+    debugger;
+    this.miner = params.miner;
   }
-
-
 }
 
 

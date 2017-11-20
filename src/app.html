@@ -5,7 +5,7 @@
       <li md-waves repeat.for="nav of router.navigation" class="hide-on-med-and-down ${nav.isActive? 'active':''}">
         <a href.bind="nav.href">${nav.title}</a>
       </li>
-      <li md-sidenav-collapse="ref.bind: sideNav;" md-waves><a class="mdi mdi-menu hide-on-large-only"></a></li>
+      <li md-sidenav-collapse="ref.bind: sideNav;" md-waves><i class="material-icons hide-on-large-only">list</i></li>
     </ul>
   </md-navbar>
   <md-sidenav view-model.ref="sideNav" md-edge="right" md-close-on-click="true">

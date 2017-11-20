@@ -1,12 +1,27 @@
 <template>
   <h1 class="card-panel">Available Pools</h1>
-  <h1 if.bind="error" click.delegate="activate()" class="card-panel red lighten-1">Couldn't retrieve data. Wanna try again?</h1>
+  <h1 if.bind="error" click.delegate="activate()" class="card-panel red lighten-1">Couldn't retrieve data. Wanna try
+    again?</h1>
   <div if.bind="data" class="row">
-    <a class="col-md6 col-sm12" repeat.for="pool of data.pools" route-href="route.bind:'pool'; params.bind:{id: pool.id}">
+
+    <h1 if.bind="data.pools.length === 0" click.delegate="activate()" class="card-panel red lighten-1">No Pools are up..
+      Hit me up and see if something changed</h1>
+    <a class="col-md6 col-sm12" repeat.for="pool of data.pools"
+       route-href="route.bind:'pool'; params.bind:{id: pool.id}">
       <md-card md-title.bind="pool.coin.type">
-        <div>
-    ${pool | stringify}
-        </div>
+        <ul class="collection">
+          <li class="collection-item" repeat.for="port of pool.ports | objectKeys">
+            <code>
+              -o stratum+tcp://${baseUrl}:${port} -u &gtWALLET_ADDRESS&lt </code><br/>
+            Difficulty: ${pool.ports[port].difficulty}<br/>
+            <template if.bind="pool.ports[port].varDiff">
+              ${varDiff | stringify}
+            </template>
+          </li>
+        </ul>
+        Payout at ${pool.paymentProcessing.minimumPayment}<br/>
+        Pool Stats: ${pool.poolStats | stringify}<br/>
+        networkStats Stats: ${pool.networkStats | stringify}<br/>
       </md-card>
     </a>
   </div>
