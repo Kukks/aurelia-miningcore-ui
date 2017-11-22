@@ -1,5 +1,5 @@
 <template>
-  <md-card md-title="Miner ${miner} Stats">
+  <md-card md-title="Miner ${address} Stats">
 
     <h1 if.bind="error" click.delegate="bind()" class="card-panel red lighten-1">Couldn't retrieve data. Wanna try
       again?</h1>
@@ -7,7 +7,6 @@
       <li class="collection-item">Pending Shares: ${data.pendingShares}</li>
       <li class="collection-item">Pending Balance: ${data.pendingBalance}</li>
       <li class="collection-item">Total Paid: ${data.totalPaid}</li>
-
     </ul>
 
   </md-card>

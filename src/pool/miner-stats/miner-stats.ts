@@ -8,7 +8,7 @@ export class MinerStats {
   @bindable
   public id: string;
   @bindable
-  public miner: string;
+  public address: string;
   public data?: PoolMinerStat;
   public error: boolean = false;
 
@@ -28,13 +28,13 @@ export class MinerStats {
   }
 
   public bind() {
-    if (!this.id || !this.miner) {
+    if (!this.id || !this.address) {
       return;
     }
     this.data = null;
     this.error = false;
     this.loadingService.toggleLoading(true);
-    this.apiClientService.http.get(`pool/${this.id}/miner/${this.miner}/stats`,).then((value: HttpResponseMessage) => {
+    this.apiClientService.http.get(`pool/${this.id}/miner/${this.address}/stats`,).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         this.data = value.content;
 

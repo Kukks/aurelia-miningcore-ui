@@ -7,7 +7,6 @@ export class PoolPage {
 
   public activate(params: {id: string, miner?:string}) {
     this.id = params.id;
-    debugger;
     this.miner = params.miner;
   }
 }

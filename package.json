@@ -10,11 +10,11 @@
   "dependencies": {
     "aurelia-animator-css": "^1.0.2",
     "aurelia-bootstrapper": "^2.1.1",
-    "aurelia-chart": "^0.2.7",
     "aurelia-http-client": "^1.2.1",
     "aurelia-materialize-bridge": "^0.31.0",
     "aurelia-polyfills": "latest",
     "bluebird": "^3.4.1",
+    "chart.js": "~2.7.1",
     "materialize-css": "^0.100.2",
     "moment": "^2.19.2"
   },

@@ -1,10 +1,8 @@
 <template>
-  <md-card md-title="Stats">
 
-    <h1 if.bind="error" click.delegate="bind()" class="card-panel red lighten-1">Couldn't retrieve data. Wanna try
-      again?</h1>
 
-    <!--<chart type="line" data.bind="data.stats" should-update="true" throttle="100"></chart>-->
-  </md-card>
+  <h1 if.bind="error" click.delegate="bind()" class="card-panel red lighten-1">Couldn't retrieve pool stats. Wanna try
+    again?</h1>
+    <canvas element.ref="chart" style="width: 100%; height: 200px;position: absolute;top:0;left:0"></canvas>
 
 </template>

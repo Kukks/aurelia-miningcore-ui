@@ -17,19 +17,11 @@ export class App implements ConfiguresRouter {
       settings: {}
     },
     {
-      route: ['pools/:id'],
+      route: ['pools/:id/:miner?'],
       name: 'pool',
       moduleId: PLATFORM.moduleName('./pool/pool'),
       nav: false,
       title: 'Pool',
-      settings: {}
-    },
-    {
-      route: ['pools/:id/:miner'],
-      name: 'poolminer',
-      moduleId: PLATFORM.moduleName('./pool/pool'),
-      nav: false,
-      title: 'Pool Miner',
       settings: {}
     }
   ];
