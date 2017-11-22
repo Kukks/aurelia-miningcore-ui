@@ -6,10 +6,6 @@ import {HttpResponseMessage} from "aurelia-http-client";
 @autoinject
 export class Pools {
 
-  public get baseUrl():string{
-    return window.location.hostname;
-  }
-
   public data?: PoolsApiResult;
   public error: boolean = false;
 

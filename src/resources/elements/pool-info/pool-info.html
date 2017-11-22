@@ -1,0 +1,54 @@
+<template>
+  <ul class="collection" class="col-md6 col-sm12 "  >
+    <li class="collection-item">
+      <h4 class="collection-header"><a route-href="route.bind:'pool'; params.bind:{id: pool.id}">${pool.id}</a> -
+        ${pool.coin.type}</h4>
+      <p>Fee: ${pool.poolFeePercent}%</p>
+    </li>
+    <li class="collection-item">
+      <div class="row">
+        <div class="col s6">
+          Pool Address
+        </div>
+        <a href.bind="pool.addressInfoLink" target="_blank" class="col s6">
+          ${pool.address}
+        </a>
+      </div>
+    </li>
+    <li class="collection-item">
+      <div class="row">
+        <div class="col s6">
+          Pool Stats
+        </div>
+        <div class="col s6">
+          Miners: ${pool.poolStats.connectedMiners} | Hashrate: ${pool.poolStats.poolHashRate}
+        </div>
+      </div>
+    </li>
+    <li class="collection-item">
+      <div class="row">
+        <div class="col s6">
+          Network Stats
+        </div>
+        <div class="col s6">
+          Current Block: ${pool.networkStats.blockHeight} | Peers: ${pool.networkStats.connectedPeers} | Network
+          Difficulty${pool.networkStats.networkDifficulty} | Network Hashrate${pool.networkStats.networkHashRate}
+        </div>
+      </div>
+    </li>
+    <li class="collection-item" repeat.for="port of pool.ports | objectKeys">
+      <div class="col s6"><code>-o stratum+tcp://${baseUrl}:${port} -u &gtWALLET_ADDRESS&lt</code>
+      </div>
+      <div class="col s6">
+        <p class="collections-title">Difficulty ${pool.ports[port].difficulty} </p>
+        <p class="collections-content">
+          <template if.bind="pool.ports[port].varDiff">
+            Difficulty also variates [Min Diff: ${pool.ports[port].varDiff.minDiff} | Variance:
+            ${pool.ports[port].varDiff.variancePercent}%]
+          </template>
+        </p>
+      </div>
+    </li>
+  </ul>
+
+</template>

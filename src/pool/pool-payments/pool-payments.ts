@@ -44,7 +44,7 @@ export class PoolPayments {
     this.data = null;
     this.error = false;
     this.loadingService.toggleLoading(true);
-    this.apiClientService.http.get(`pool/${this.id}/blocks`,).then((value: HttpResponseMessage) => {
+    this.apiClientService.http.get(`pools/${this.id}/blocks`,).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         this.data = value.content;
 

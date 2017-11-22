@@ -34,7 +34,7 @@ export class MinerStats {
     this.data = null;
     this.error = false;
     this.loadingService.toggleLoading(true);
-    this.apiClientService.http.get(`pool/${this.id}/miner/${this.address}/stats`,).then((value: HttpResponseMessage) => {
+    this.apiClientService.http.get(`pools/${this.id}/miner/${this.address}/stats`,).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         this.data = value.content;
 

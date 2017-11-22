@@ -8,5 +8,6 @@ export function configure(config: FrameworkConfiguration) {
     PLATFORM.moduleName("./value-converters/objectkeys.value-converter"),
     PLATFORM.moduleName("./value-converters/stringify"),
     PLATFORM.moduleName("./elements/full-loader/full-loader"),
+    PLATFORM.moduleName("./elements/pool-info/pool-info"),
   ]);
 }

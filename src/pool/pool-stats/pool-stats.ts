@@ -89,7 +89,7 @@ export class PoolStats {
     this.data = null;
     this.error = false;
     this.loadingService.toggleLoading(true);
-    this.apiClientService.http.get(`pool/${this.id}/stats/hourly`,).then((value: HttpResponseMessage) => {
+    this.apiClientService.http.get(`pools/${this.id}/stats/hourly`,).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         this.data = value.content;
 

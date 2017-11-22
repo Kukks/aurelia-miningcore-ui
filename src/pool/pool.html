@@ -5,8 +5,8 @@
   <require from="./pool-stats/pool-stats"></require>
 
     <h1 class="card-panel">${id} Pool</h1>
-
-    <pool-stats id.bind="id" style="width: 100%; height: 400px;position: relative;float: left; z-index:1"></pool-stats>
+    <pool-info if.bind="data" pool.bind="data.pool"></pool-info>
+    <pool-stats id.bind="id" style="width: 100%; height: 200px;position: relative;float: left; z-index:1"></pool-stats>
     <pool-blocks id.bind="id" containerless ></pool-blocks>
     <pool-payments id.bind="id" containerless></pool-payments>
     <md-input md-label="Check Your Miner Wallet" md-value.bind="minerNew"></md-input>
