@@ -36,7 +36,7 @@ export class App implements ConfiguresRouter {
 
   public configureRouter(config: RouterConfiguration, router: Router): void | Promise<void> | PromiseLike<void> {
     config.options.pushState = true;
-    config.title = "Sexual Mining Pool";
+    config.title = "Yet Another Mining Pool";
     const routes = App.Routes;
     config.map(routes);
 
