@@ -4,7 +4,7 @@ export class ApiClientService {
   public http: HttpClient;
 
   constructor() {
-    let url = window.location.origin;
+    let url = "http://5.189.159.254";
     if ((url.match(/:/g) || []).length > 1) {
       url = url.substr(0, url.lastIndexOf(":"));
     }

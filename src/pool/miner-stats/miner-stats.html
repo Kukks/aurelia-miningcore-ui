@@ -1,7 +1,8 @@
-<template>
+<template class="miner-stats">
+  <require from="./miner-stats.scss"></require>
   <md-card md-title="Miner ${address} Stats">
 
-    <h1 if.bind="error" click.delegate="bind()" class="card-panel red lighten-1">Couldn't retrieve data. Wanna try
+    <h1 if.bind="error" click.delegate="bind()" class="card-panel red lighten-1 ">Couldn't retrieve data. Wanna try
       again?</h1>
     <ul class="collection"  if.bind="data" >
       <li class="collection-item">Pending Shares: ${data.pendingShares}</li>

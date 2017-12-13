@@ -9,7 +9,9 @@ import {HttpResponseMessage} from "aurelia-http-client";
 export class PoolPage {
   @observable
   public id: string;
+  @observable()
   public miner: string;
+  public minerNew: string;
 
   public error: boolean = false;
   public data: Pool;
@@ -42,6 +44,10 @@ export class PoolPage {
     }).then(() => {
       this.loadingService.toggleLoading(false);
     })
+  }
+
+  public minerChanged(){
+    this.minerNew= this.miner;
   }
 }
 

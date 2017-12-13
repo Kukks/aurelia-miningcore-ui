@@ -3,35 +3,44 @@
 
     <h1 if.bind="error" click.delegate="bind()" class="card-panel red lighten-1">Couldn't retrieve data. Wanna try
       again?</h1>
+    <template if.bind="data && data.length > 0">
+      <table class="responsive-table">
+        <tr>
+          <th>coin</th>
+          <th>address</th>
+          <th>amount</th>
+          <th>transactionConfirmationData</th>
+          <th>created</th>
+        </tr>
+        <tr repeat.for="payment of data">
+          <td>${payment.coin}</td>
+          <td><a href.bind="payment.addressInfoLink" target="_blank"> ${payment.address}</a></td>
+          <td>${payment.amount}</td>
+          <td><a href.bind="payment.transactionInfoLink" target="_blank"> ${payment.transactionConfirmationData}</a>
+          </td>
+          <td>${moment(payment.created)}</td>
+        </tr>
 
-    <table if.bind="data">
-    <tr>
-        <th>coin</th>
-        <th>address</th>
-        <th>amount</th>
-        <th>transactionConfirmationData</th>
-        <th>created</th>
-      </tr>
-      <tr repeat.for="payment of data">
-        <td>${payment.coin}</td>
-        <td><a href.bind="payment.addressInfoLink" target="_blank"> ${payment.address}</a></td>
-        <td>${payment.amount}</td>
-        <td><a href.bind="payment.transactionInfoLink" target="_blank"> ${payment.transactionConfirmationData}</a></td>
-        <td>${moment(payment.created)}</td>
-      </tr>
+      </table>
+      <button md-button="flat: true;" md-waves if.bind="currentPageNumber >1"
+              click.delegate="currentPageNumber = currentPageNumber -1">Previous
+      </button>
+      Page : ${currentPageNumber}
 
-    </table>
-    <button md-button="flat: true;" md-waves if.bind="currentPageNumber >1" click.delegate="currentPageNumber = currentPageNumber -1">Previous</button>
-    Page : ${currentPageNumber}
+      <button md-button="flat: true;" md-waves if.bind="allowNext"
+              click.delegate="currentPageNumber = currentPageNumber +1">Next
+      </button>
 
-    <button md-button="flat: true;" md-waves if.bind="allowNext" click.delegate="currentPageNumber = currentPageNumber +1">Next</button>
-
-    <select md-select="enable-option-observer: true;" value.two-way="pageSize">
-      <option model.bind="5" selected.bind="pageSize === 5">5</option>
-      <option model.bind="20" selected.bind="pageSize === 20">20</option>
-      <option model.bind="50" selected.bind="pageSize === 50">50</option>
-      <option model.bind="100" selected.bind="pageSize === 100">100</option>
-    </select>
+      <select md-select="enable-option-observer: true;" value.two-way="pageSize">
+        <option model.bind="5" selected.bind="pageSize === 5">5</option>
+        <option model.bind="20" selected.bind="pageSize === 20">20</option>
+        <option model.bind="50" selected.bind="pageSize === 50">50</option>
+        <option model.bind="100" selected.bind="pageSize === 100">100</option>
+      </select>
+    </template>
+    <template else>
+      No payments sent yet.
+    </template>
   </md-card>
 
 </template>

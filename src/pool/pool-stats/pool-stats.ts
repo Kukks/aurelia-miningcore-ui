@@ -1,20 +1,93 @@
-import {ApiClientService} from "../../resources/services/api-client.service";
-import {LoaderService} from "../../resources/services/loader.service";
+
 import {HttpResponseMessage} from "aurelia-http-client";
 import {bindable, autoinject, observable, computedFrom} from "aurelia-framework";
 import {TaskQueue} from "aurelia-task-queue";
 import Chart from "chart.js"
-
+import * as moment from "moment";
+import {ApiClientService} from "../../resources/services/api-client.service";
+import {LoaderService} from "../../resources/services/loader.service";
 @autoinject
 export class PoolStats {
-  public chart: HTMLCanvasElement;
+  public chartHash: HTMLCanvasElement;
+  public chartMiners: HTMLCanvasElement;
 
-  public get chartData() {
+
+
+
+  public get minerChartConfig() {
+    if (!this.data || !this.data.stats) {
+      return null;
+    }
+
+    return {
+      type: 'line',
+      data: {
+        labels: this.data.stats.map(value => moment(value.created).format("ddd, hA")),
+        datasets: [
+          {
+            label: "Miners",
+            data: this.data.stats.map(value => value.connectedMiners),
+            backgroundColor: "rgba(151,187,205,0.2)",
+            borderColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)"
+          }
+        ]
+      },
+      options: {
+        scales: {
+          xAxes: [{
+            time: {
+              unit: 'hour',
+              unitStepSize: 1,
+            }
+          }]
+        }
+      }
+    };
+  }
+  public get hashrateChartConfig() {
+    if (!this.data || !this.data.stats) {
+      return null;
+    }
+
+    return {
+      type: 'line',
+      data: {
+        labels: this.data.stats.map(value => moment(value.created).format("ddd, hA")),
+        datasets: [
+          {
+            label: "Hashrate",
+            data: this.data.stats.map(value => value.poolHashRate),
+            backgroundColor: "rgba(151,187,205,0.2)",
+            borderColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)"
+          }
+        ]
+      },
+      options: {
+        scales: {
+          xAxes: [{
+            time: {
+              unit: 'hour',
+              unitStepSize: 1,
+            }
+          }]
+        }
+      }
+    };
+  }
+
+  public get chartHashData() {
     if (!this.data || !this.data.stats) {
       return null;
     }
     const result = {
-      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
       datasets: [
         {
           label: "Hash Rate",
@@ -25,16 +98,6 @@ export class PoolStats {
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
           pointHighlightStroke: "rgba(220,220,220,1)",
-        },
-        {
-          label: "Miners",
-          data: this.data.stats.map(value => value.connectedMiners),
-          backgroundColor: "rgba(151,187,205,0.2)",
-          borderColor: "rgba(151,187,205,1)",
-          pointColor: "rgba(151,187,205,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(151,187,205,1)"
         }
       ]
     }
@@ -50,31 +113,37 @@ export class PoolStats {
   constructor(private apiClientService: ApiClientService, private loadingService: LoaderService, private taskQueue: TaskQueue) {
 
   }
-  public attached(){
+
+  public attached() {
     this.dataChanged();
   }
 
   public dataChanged() {
-    if (!this.chartData) {
+this.handleHashrateChart();
+this.handleMinerChart();
+  }
+
+  private handleMinerChart() {
+    if (!this.minerChartConfig) {
       return;
     }
     this.taskQueue.queueMicroTask(() => {
-      if(!this.chart){
+      if (!this.chartMiners) {
         return;
       }
-      var myChart = new Chart(this.chart, {
-        type: 'line',
-        data: this.chartData,
-        options: {
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              }
-            }]
-          }
-        }
-      });
+      new Chart(this.chartMiners, this.minerChartConfig);
+    })
+  }
+
+  private handleHashrateChart() {
+    if (!this.hashrateChartConfig) {
+      return;
+    }
+    this.taskQueue.queueMicroTask(() => {
+      if (!this.chartHash) {
+        return;
+      }
+      new Chart(this.chartHash, this.hashrateChartConfig);
     })
   }
 
