@@ -2,6 +2,7 @@ import {ApiClientService} from "../../resources/services/api-client.service";
 import {LoaderService} from "../../resources/services/loader.service";
 import {HttpResponseMessage} from "aurelia-http-client";
 import {bindable, autoinject, observable} from "aurelia-framework";
+import {buildQueryString} from "aurelia-path";
 
 @autoinject
 export class PoolPayments {
@@ -10,12 +11,12 @@ export class PoolPayments {
   public data?: PoolPaymentItem[];
   public error: boolean = false;
   @observable
-  public currentPageNumber: number = 1;
+  public currentPageNumber: number = 0;
   @observable
   public pageSize: number = 5;
 
-  public get allowNext():boolean{
-    if(this.data && this.data.length >= this.pageSize){
+  public get allowNext(): boolean {
+    if (this.data && this.data.length >= this.pageSize) {
       return true;
     }
     return false;
@@ -30,7 +31,7 @@ export class PoolPayments {
   }
 
   public pageSizeChanged() {
-    this.currentPageNumber = 1;
+    this.currentPageNumber = 0;
   }
 
   public currentPageNumberChanged() {
@@ -44,7 +45,11 @@ export class PoolPayments {
     this.data = null;
     this.error = false;
     this.loadingService.toggleLoading(true);
-    this.apiClientService.http.get(`pools/${this.id}/payments`,).then((value: HttpResponseMessage) => {
+    let options = {
+      pageSize: this.pageSize,
+      page: this.currentPageNumber
+    }
+    this.apiClientService.http.get(`pools/${this.id}/payments?${buildQueryString(options, true)}`,).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         this.data = value.content;
 

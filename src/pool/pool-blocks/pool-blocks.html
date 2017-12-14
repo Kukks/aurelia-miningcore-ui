@@ -16,30 +16,34 @@
           <td>${block.blockHeight}</td>
           <td>${block.status}</td>
           <td>${block.confirmationProgress * 100}%</td>
-          <td><a href.bind="block.infoLink" target="_blank"> ${block.transactionConfirmationData}</a></td>
+          <td><a href.bind="block.infoLink" target="_blank" class="truncate" style="max-width: 200px;"> ${block.transactionConfirmationData}</a></td>
           <td>${block.reward}</td>
           <td>${moment(block.created)}</td>
         </tr>
 
       </table>
-      <button md-button="flat: true;" md-waves if.bind="currentPageNumber >1"
-              click.delegate="currentPageNumber = currentPageNumber -1">Previous
-      </button>
-      Page : ${currentPageNumber}
 
-      <button md-button="flat: true;" md-waves if.bind="allowNext"
-              click.delegate="currentPageNumber = currentPageNumber +1">Next
-      </button>
-      <select md-select="enable-option-observer: true;" value.two-way="pageSize">
-        <option model.bind="5" selected.bind="pageSize === 5">5</option>
-        <option model.bind="20" selected.bind="pageSize === 20">20</option>
-        <option model.bind="50" selected.bind="pageSize === 50">50</option>
-        <option model.bind="100" selected.bind="pageSize === 100">100</option>
-      </select>
+
     </template>
-    <template else>
+    <template if.bind="!data || (data.length === 0 && currentPageNumber === 0) ">
       No blocks found yet.
     </template>
+    <div class="row" if.bind="data && (data.length > 0 || currentPageNumber > 0)">
+      <ul class="pagination col s12 m3">
+        <li md-waves if.bind="currentPageNumber !== 0"><a click.delegate="currentPageNumber = currentPageNumber -1"><i class="material-icons">chevron_left</i></a></li>
+        <li class="active"><a > ${currentPageNumber +1}</a></li>
+        <li md-waves if.bind="allowNext"><a click.delegate="currentPageNumber = currentPageNumber +1"><i class="material-icons">chevron_right</i></a></li>
+      </ul>
+
+      <div class="col s12 m3">
+        <select md-select="enable-option-observer: true;" value.two-way="pageSize">
+          <option model.bind="5" selected.bind="pageSize === 5">5</option>
+          <option model.bind="20" selected.bind="pageSize === 20">20</option>
+          <option model.bind="50" selected.bind="pageSize === 50">50</option>
+          <option model.bind="100" selected.bind="pageSize === 100">100</option>
+        </select>
+      </div>
+    </div>
   </md-card>
 
 </template>
