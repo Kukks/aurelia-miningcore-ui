@@ -8,18 +8,23 @@ import {buildQueryString} from "aurelia-path";
 export class PoolBlocks {
   @bindable
   public id: string;
-  public data?: PoolBlockItem[];
+  public data?: PoolBlockItem[] = [];
   public error: boolean = false;
   @observable
   public currentPageNumber: number = 0;
   @observable
   public pageSize: number = 5;
+  public loading: boolean = false;
 
-  public get allowNext():boolean{
-    if(this.data && this.data.length >= this.pageSize){
-      return true;
+
+  public get allowNext(): boolean {
+    if (this.loading){
+      return false;
     }
-    return false;
+    if(this.data.length < ((this.currentPageNumber+1) * this.pageSize) ){
+      return false;
+    }
+    return true;
   }
 
   constructor(private apiClientService: ApiClientService, private loadingService: LoaderService) {
@@ -27,25 +32,25 @@ export class PoolBlocks {
   }
 
   public idChanged() {
-    this.bind();
+    this.currentPageNumber = -1;
   }
 
   public pageSizeChanged() {
-    this.currentPageNumber = 0;
+    this.currentPageNumber = -1;
   }
 
   public currentPageNumberChanged() {
-    if(this.currentPageNumber < 0){
+    if (this.currentPageNumber < 0) {
       this.currentPageNumber = 0;
     }
     this.bind();
   }
 
   public bind() {
+    this.loading = true;
     if (!this.id) {
       return;
     }
-    this.data = null;
     this.error = false;
     this.loadingService.toggleLoading(true);
     let options = {
@@ -54,10 +59,12 @@ export class PoolBlocks {
     }
 
 
-    this.apiClientService.http.get(`pools/${this.id}/blocks?${buildQueryString(options,true)}`).then((value: HttpResponseMessage) => {
+    this.apiClientService.http.get(`pools/${this.id}/blocks?${buildQueryString(options, true)}`).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
-        this.data = value.content;
-
+        if (this.currentPageNumber === 0) {
+          this.data = [];
+        }
+        this.data = [...this.data, ...value.content];
       } else {
         this.error = true;
       }
@@ -65,9 +72,9 @@ export class PoolBlocks {
       this.error = true;
     }).then(() => {
       this.loadingService.toggleLoading(false);
+      this.loading = false;
     })
   }
-
 }
 
 export interface PoolBlockItem {

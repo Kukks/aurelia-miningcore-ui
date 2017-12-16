@@ -29,10 +29,10 @@ export class PoolPage {
     if (!this.id) {
       return;
     }
-    this.data = null;
+    // this.data = null;
     this.error = false;
     this.loadingService.toggleLoading(true);
-    this.apiClientService.http.get(`pools/${this.id}`,).then((value: HttpResponseMessage) => {
+    return this.apiClientService.http.get(`pools/${this.id}`,).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         this.data = value.content;
 

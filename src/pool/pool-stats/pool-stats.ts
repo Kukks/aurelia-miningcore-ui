@@ -11,9 +11,6 @@ export class PoolStats {
   public chartHash: HTMLCanvasElement;
   public chartMiners: HTMLCanvasElement;
 
-
-
-
   public get minerChartConfig() {
     if (!this.data || !this.data.stats) {
       return null;

@@ -8,18 +8,22 @@ import {buildQueryString} from "aurelia-path";
 export class PoolPayments {
   @bindable
   public id: string;
-  public data?: PoolPaymentItem[];
+  public data: PoolPaymentItem[] = [];
   public error: boolean = false;
   @observable
   public currentPageNumber: number = 0;
   @observable
   public pageSize: number = 5;
 
+  public loading: boolean = false;
   public get allowNext(): boolean {
-    if (this.data && this.data.length >= this.pageSize) {
-      return true;
+    if (this.loading){
+      return false;
     }
-    return false;
+    if(this.data.length < ((this.currentPageNumber+1) * this.pageSize) ){
+      return false;
+    }
+    return true;
   }
 
   constructor(private apiClientService: ApiClientService, private loadingService: LoaderService) {
@@ -27,14 +31,17 @@ export class PoolPayments {
   }
 
   public idChanged() {
-    this.bind();
+    this.currentPageNumber = -1;
   }
 
   public pageSizeChanged() {
-    this.currentPageNumber = 0;
+    this.currentPageNumber = -1;
   }
 
   public currentPageNumberChanged() {
+    if (this.currentPageNumber < 0) {
+      this.currentPageNumber = 0;
+    }
     this.bind();
   }
 
@@ -42,7 +49,7 @@ export class PoolPayments {
     if (!this.id) {
       return;
     }
-    this.data = null;
+    this.loading = true;
     this.error = false;
     this.loadingService.toggleLoading(true);
     let options = {
@@ -51,7 +58,10 @@ export class PoolPayments {
     }
     this.apiClientService.http.get(`pools/${this.id}/payments?${buildQueryString(options, true)}`,).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
-        this.data = value.content;
+        if(this.currentPageNumber ===  0){
+          this.data = [];
+        }
+        this.data= [...this.data,...value.content ];
 
       } else {
         this.error = true;
@@ -60,6 +70,8 @@ export class PoolPayments {
       this.error = true;
     }).then(() => {
       this.loadingService.toggleLoading(false);
+
+      this.loading = false;
     })
   }
 

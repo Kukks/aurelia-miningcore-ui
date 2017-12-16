@@ -1,5 +1,5 @@
 <template>
-  <ul class="collection" class="col s12 m6  "  >
+  <ul class="collection" class="col s12 m6  ">
     <li class="collection-item">
       <h4 class="collection-header"><a route-href="route.bind:'pool'; params.bind:{id: pool.id}">${pool.id}</a> -
         ${pool.coin.type}</h4>
@@ -21,7 +21,10 @@
           Pool Stats
         </div>
         <div class="col  s12 m6 ">
-          Miners: ${pool.poolStats.connectedMiners} | Hashrate: ${pool.poolStats.poolHashRate}
+          <ul>
+            <li>Miners: ${pool.poolStats.connectedMiners}</li>
+            <li>Hashrate: ${HashCalculatorService.formatHashRate(pool.poolStats.poolHashRate)}</li>
+          </ul>
         </div>
       </div>
     </li>
@@ -31,8 +34,13 @@
           Network Stats
         </div>
         <div class="col  s12 m6 ">
-          Current Block: ${pool.networkStats.blockHeight} | Peers: ${pool.networkStats.connectedPeers} | Network
-          Difficulty${pool.networkStats.networkDifficulty} | Network Hashrate${pool.networkStats.networkHashRate}
+          <ul>
+            <li>Current Block: ${pool.networkStats.blockHeight}</li>
+            <li>Peers: ${pool.networkStats.connectedPeers}</li>
+            <li>Network Difficulty ${HashCalculatorService.formatDifficulty(pool.networkStats.networkDifficulty)}
+            </li>
+            <li>Network Hashrate ${HashCalculatorService.formatHashRate(pool.networkStats.networkHashRate)}</li>
+          </ul>
         </div>
       </div>
     </li>
@@ -42,10 +50,11 @@
       <div class="col  s12 m6 ">
         <p class="collections-title">Difficulty ${pool.ports[port].difficulty} </p>
         <p class="collections-content">
-          <template if.bind="pool.ports[port].varDiff">
-            Difficulty also variates [Min Diff: ${pool.ports[port].varDiff.minDiff} | Variance:
-            ${pool.ports[port].varDiff.variancePercent}%]
-          </template>
+        <ul if.bind="pool.ports[port].varDiff">
+          <li>Difficulty also variates </li>
+          <li>[Min Diff: ${pool.ports[port].varDiff.minDiff} Variance: ${pool.ports[port].varDiff.variancePercent}%]
+          </li>
+        </ul>
         </p>
       </div>
     </li>

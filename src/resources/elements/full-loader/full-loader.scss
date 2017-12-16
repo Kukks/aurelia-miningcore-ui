@@ -1,12 +1,13 @@
 .full-loader {
   display: none;
-  position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: lightgray;
-  opacity: 0.2;
+  background-color: #8a8a8a;
+  z-index: 999999;
+  opacity: 0.4;
+  position: fixed;
 
   &.show {
     display: block;
