@@ -1,5 +1,6 @@
 <template>
-  <ul class="collection" class="col s12 m6  ">
+
+  <ul class="collection">
     <li class="collection-item">
       <h4 class="collection-header"><a route-href="route.bind:'pool'; params.bind:{id: pool.id}">${pool.id}</a> -
         ${pool.coin.type}</h4>
@@ -10,7 +11,7 @@
         <div class="col s12 m6 ">
           Pool Address
         </div>
-        <a href.bind="pool.addressInfoLink" target="_blank" class="col  s12 m6 ">
+        <a href.bind="pool.addressInfoLink" target="_blank" class="col  s12 m6 truncate">
           ${pool.address}
         </a>
       </div>

@@ -4,18 +4,47 @@
   <require from="./miner-stats/miner-stats"></require>
   <require from="./pool-stats/pool-stats"></require>
 
-  <div class="row minerInput">
-    <md-input md-label="Check Your Miner Wallet" md-value.bind="minerNew" class="col s12 m10"></md-input>
-    <a route-href="route.bind:'pool'; params.bind:{id: id, miner: minerNew}" class="col s12 m2" style="margin-top:20px">
-      <button md-button="flat:bind;" if.bind="minerNew">Check</button>
-    </a>
+
+  <div class="row">
+    <div class="col s12 m12 l6 row">
+      <div class="card-panel row hoverable m-no-padding">
+        <md-input md-label="Check Your Miner Wallet" md-value.bind="minerNew" class="col s12 m10"></md-input>
+        <a route-href="route.bind:'pool'; params.bind:{id: id, miner: minerNew}" class="col s12 m2"
+           style="margin-top:20px">
+          <button md-button="flat:bind;" if.bind="minerNew">Check</button>
+        </a>
+
+        <miner-stats if.bind="miner" id.bind="id" address.bind="miner" class="col s12 m12"></miner-stats>
+        </md-card>
+
+
+        <pool-stats id.bind="id"></pool-stats>
+      </div>
+    </div>
+    <div class="col s12 m12 l6 row">
+      <div class="card-panel hoverable m-no-padding" if.bind="data" >
+        <ul md-tabs="fixed: true;" class="z-depth-1">
+          <li md-waves="color: primary;"><a href="#poolInfo">Info</a></li>
+          <li md-waves="color: primary;" if.bind="data.pool.coin.type ==='STAK'"><a href="#gettingStarted">guide</a></li>
+        </ul>
+
+        <pool-info pool.bind="data.pool" id="poolInfo" class="tab-content"></pool-info>
+        <div id="gettingStarted" class="tab-content" if.bind="data.pool.coin.type ==='STAK'">
+
+          <a href="http://cryptovore.com/2017/11/25/straks-how-to-mine-nvidia-gpu/" target="_blank">Nvidia Gpus</a>
+        </div>
+      </div>
+    </div>
+    <div class="col s12">
+      <div class="card-panel m-no-padding hoverable">
+        <ul md-tabs="fixed: true;" class="z-depth-1">
+          <li md-waves="color: primary;"><a href="#blocksTab">Blocks</a></li>
+          <li md-waves="color: primary;" ><a href="#paymentsTab">Payments</a></li>
+        </ul>
+
+        <pool-blocks pool-id.bind="id" id="blocksTab" class="tab-content z-depth-1"></pool-blocks>
+        <pool-payments pool-id.bind="id" id="paymentsTab" class="tab-content z-depth-1"></pool-payments>
+      </div>
+    </div>
   </div>
-
-  <miner-stats if.bind="miner" id.bind="id" address.bind="miner"></miner-stats>
-  <pool-info if.bind="data" pool.bind="data.pool"></pool-info>
-  <pool-blocks id.bind="id" containerless></pool-blocks>
-  <pool-payments id.bind="id" containerless></pool-payments>
-  <pool-stats id.bind="id"></pool-stats>
-
-
 </template>

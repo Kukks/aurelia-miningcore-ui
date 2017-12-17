@@ -7,7 +7,7 @@ import {buildQueryString} from "aurelia-path";
 @autoinject
 export class PoolPayments {
   @bindable
-  public id: string;
+  public poolId: string;
   public data: PoolPaymentItem[] = [];
   public error: boolean = false;
   @observable
@@ -30,7 +30,7 @@ export class PoolPayments {
 
   }
 
-  public idChanged() {
+  public poolIdChanged() {
     this.currentPageNumber = -1;
   }
 
@@ -46,7 +46,7 @@ export class PoolPayments {
   }
 
   public bind() {
-    if (!this.id) {
+    if (!this.poolId) {
       return;
     }
     this.loading = true;
@@ -56,7 +56,7 @@ export class PoolPayments {
       pageSize: this.pageSize,
       page: this.currentPageNumber
     }
-    this.apiClientService.http.get(`pools/${this.id}/payments?${buildQueryString(options, true)}`,).then((value: HttpResponseMessage) => {
+    this.apiClientService.http.get(`pools/${this.poolId}/payments?${buildQueryString(options, true)}`,).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         if(this.currentPageNumber ===  0){
           this.data = [];

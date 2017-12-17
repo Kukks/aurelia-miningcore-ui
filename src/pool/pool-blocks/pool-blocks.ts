@@ -6,8 +6,9 @@ import {buildQueryString} from "aurelia-path";
 
 @autoinject
 export class PoolBlocks {
+
   @bindable
-  public id: string;
+  public poolId: string;
   public data?: PoolBlockItem[] = [];
   public error: boolean = false;
   @observable
@@ -31,7 +32,7 @@ export class PoolBlocks {
 
   }
 
-  public idChanged() {
+  public poolIdChanged() {
     this.currentPageNumber = -1;
   }
 
@@ -48,7 +49,7 @@ export class PoolBlocks {
 
   public bind() {
     this.loading = true;
-    if (!this.id) {
+    if (!this.poolId) {
       return;
     }
     this.error = false;
@@ -59,7 +60,7 @@ export class PoolBlocks {
     }
 
 
-    this.apiClientService.http.get(`pools/${this.id}/blocks?${buildQueryString(options, true)}`).then((value: HttpResponseMessage) => {
+    this.apiClientService.http.get(`pools/${this.poolId}/blocks?${buildQueryString(options, true)}`).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         if (this.currentPageNumber === 0) {
           this.data = [];

@@ -1,34 +1,33 @@
 <template>
-  <md-card md-title="Blocks">
-    <h1 if.bind="error" click.delegate="bind()" class="card-panel red lighten-1">Couldn't retrieve data. Wanna try
-      again?</h1>
-      <table class="responsive-table" if.bind="data && data.length > 0">
-        <tr>
-          <th>blockHeight</th>
-          <th>status</th>
-          <th>confirmationProgress</th>
-          <th>transactionConfirmationData</th>
-          <th>reward</th>
-          <th>created</th>
-        </tr>
-        <tr repeat.for="block of data">
-          <td>${block.blockHeight}</td>
-          <td>${block.status}</td>
-          <td>${block.confirmationProgress * 100}%</td>
-          <td><a href.bind="block.infoLink" target="_blank" class="truncate" style="max-width: 200px;"> ${block.transactionConfirmationData}</a></td>
-          <td>${block.reward}</td>
-          <td>${moment(block.created).format("lll")}</td>
-        </tr>
-      </table>
+  <h1 if.bind="error" click.delegate="bind()" class="card-panel red lighten-1">Couldn't retrieve data. Wanna try
+    again?</h1>
+  <table class="responsive-table" if.bind="data && data.length > 0">
+    <tr>
+      <th>blockHeight</th>
+      <th>status</th>
+      <th>confirmationProgress</th>
+      <th>transactionConfirmationData</th>
+      <th>reward</th>
+      <th>created</th>
+    </tr>
+    <tr repeat.for="block of data">
+      <td>${block.blockHeight}</td>
+      <td>${block.status}</td>
+      <td>${block.confirmationProgress * 100}%</td>
+      <td><a href.bind="block.infoLink" target="_blank" class="truncate" style="max-width: 200px;">
+        ${block.transactionConfirmationData}</a></td>
+      <td>${block.reward}</td>
+      <td>${moment(block.created).format("lll")}</td>
+    </tr>
+  </table>
 
-    <template if.bind="!data || (data.length === 0 && currentPageNumber === 0) ">
-      No blocks found yet.
-    </template>
-    <div class="row">
-<div class="col s6 m3">  <button if.bind="allowNext " md-button md-waves click.delegate="currentPageNumber = currentPageNumber +1">Load more</button></div>
-<div class="col s6 push-m6 m3">    <button md-button md-waves click.delegate="idChanged()">Refresh</button></div>
-
-    </div>
-  </md-card>
+  <template if.bind="!data || (data.length === 0 && currentPageNumber === 0) ">
+    No blocks found yet.
+  </template>
+  <button if.bind="allowNext " md-button md-waves click.delegate="currentPageNumber = currentPageNumber +1">Load
+    more
+  </button>
+  <button if.bind="!loading" md-button md-waves click.delegate="currentPageNumber = currentPageNumber +1">Refresh
+  </button>
 
 </template>

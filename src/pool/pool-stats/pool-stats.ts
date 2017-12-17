@@ -17,6 +17,8 @@ export class PoolStats {
     }
 
     return {
+      maintainAspectRatio: true,
+      responsive: true,
       type: 'line',
       data: {
         labels: this.data.stats.map(value => moment(value.created).format("ddd, hA")),
@@ -51,6 +53,8 @@ export class PoolStats {
     }
 
     return {
+      maintainAspectRatio: true,
+      responsive: true,
       type: 'line',
       data: {
         labels: this.data.stats.map(value => moment(value.created).format("ddd, hA")),

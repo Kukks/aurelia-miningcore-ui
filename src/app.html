@@ -1,4 +1,5 @@
 <template>
+  <require from="./app.scss"></require>
   <md-navbar>
     <a href="/" class="brand-logo left"><span>${router.title}</span></a>
     <ul class="right">
@@ -15,7 +16,7 @@
       </li>
     </ul>
   </md-sidenav>
-  <main class="container">
+  <main >
     <full-loader></full-loader>
     <router-view></router-view>
   </main>

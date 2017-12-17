@@ -1,5 +1,4 @@
 <template>
-  <md-card md-title="Payments">
 
     <h1 if.bind="error" click.delegate="bind()" class="card-panel red lighten-1">Couldn't retrieve data. Wanna try
       again?</h1>
@@ -32,6 +31,5 @@
     <button if.bind="!loading" md-button md-waves click.delegate="currentPageNumber = currentPageNumber +1">Refresh
     </button>
 
-  </md-card>
 
 </template>

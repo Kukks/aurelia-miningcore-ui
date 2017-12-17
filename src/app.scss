@@ -1,0 +1,21 @@
+@import "vars";
+
+[md-tabs] .waves-effect {
+  position: static;
+}
+
+ul.tabs-fixed-width.tabs {
+  overflow-x: hidden;
+}
+
+@media #{$small-and-down} {
+  .s-no-padding {
+    padding: 0 !important;
+  }
+}
+
+@media #{$medium-and-down} {
+  .m-no-padding {
+    padding: 0 !important;
+  }
+}
