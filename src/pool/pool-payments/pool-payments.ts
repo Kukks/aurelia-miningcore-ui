@@ -17,9 +17,6 @@ export class PoolPayments {
 
   public loading: boolean = false;
   public get allowNext(): boolean {
-    if (this.loading){
-      return false;
-    }
     if(this.data.length < ((this.currentPageNumber+1) * this.pageSize) ){
       return false;
     }
@@ -29,10 +26,25 @@ export class PoolPayments {
   constructor(private apiClientService: ApiClientService, private loadingService: LoaderService) {
 
   }
-
-  public refresh(){
-    this.currentPageNumber= -1;
+  public nextPage(){
+    if (this.loading) {
+      return false;
+    }
+    this.currentPageNumber++;
   }
+
+  public refresh() {
+    if (this.loading) {
+      return false;
+    }
+    const newPageSize = (this.currentPageNumber + 1) * this.pageSize;
+    if (newPageSize === this.pageSize) {
+      this.currentPageNumber = -1;
+    } else {
+      this.pageSize = (this.currentPageNumber + 1) * this.pageSize;
+    }
+  }
+
   public poolIdChanged() {
     this.currentPageNumber = -1;
   }
@@ -44,9 +56,12 @@ export class PoolPayments {
   public currentPageNumberChanged() {
     if (this.currentPageNumber < 0) {
       this.currentPageNumber = 0;
+      return;
     }
+
     this.bind();
   }
+
 
   public bind() {
     if (!this.poolId) {
@@ -54,7 +69,6 @@ export class PoolPayments {
     }
     this.loading = true;
     this.error = false;
-    this.loadingService.toggleLoading(true);
     let options = {
       pageSize: this.pageSize,
       page: this.currentPageNumber
@@ -66,14 +80,15 @@ export class PoolPayments {
         }
         this.data= [...this.data,...value.content ];
 
+        setTimeout(this.refresh.bind(this),4000);
+
+
       } else {
         this.error = true;
       }
     }).catch(() => {
       this.error = true;
     }).then(() => {
-      this.loadingService.toggleLoading(false);
-
       this.loading = false;
     })
   }

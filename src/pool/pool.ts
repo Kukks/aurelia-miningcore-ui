@@ -31,19 +31,16 @@ export class PoolPage {
     }
     // this.data = null;
     this.error = false;
-    this.loadingService.toggleLoading(true);
     return this.apiClientService.http.get(`pools/${this.id}`,).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         this.data = value.content;
-
+        setTimeout(this.idChanged.bind(this),2000);
       } else {
         this.error = true;
       }
     }).catch(() => {
       this.error = true;
-    }).then(() => {
-      this.loadingService.toggleLoading(false);
-    })
+    });
   }
 
   public minerChanged(){

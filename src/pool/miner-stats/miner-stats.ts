@@ -23,6 +23,7 @@ export class MinerStats {
   public minerChanged() {
     this.bind();
   }
+
   public currentPageNumberChanged() {
     this.bind();
   }
@@ -31,23 +32,19 @@ export class MinerStats {
     if (!this.id || !this.address) {
       return;
     }
-    this.data = null;
     this.error = false;
-    this.loadingService.toggleLoading(true);
-    this.apiClientService.http.get(`pools/${this.id}/miner/${this.address}/stats`,).then((value: HttpResponseMessage) => {
+    return this.apiClientService.http.get(`pools/${this.id}/miner/${this.address}/stats`,).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         this.data = value.content;
-
+        setTimeout(this.bind.bind(this), 4000);
       } else {
         this.error = true;
       }
     }).catch(() => {
       this.error = true;
-    }).then(() => {
-      this.loadingService.toggleLoading(false);
     })
-  }
 
+  }
 }
 
 export interface PoolMinerStat {

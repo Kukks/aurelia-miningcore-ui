@@ -182,18 +182,17 @@ this.handleMinerChart();
     }
     this.data = null;
     this.error = false;
-    this.loadingService.toggleLoading(true);
     this.apiClientService.http.get(`pools/${this.id}/stats/hourly`,).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         this.data = value.content;
+
+        setTimeout(this.bind.bind(this),20000);
 
       } else {
         this.error = true;
       }
     }).catch(() => {
       this.error = true;
-    }).then(() => {
-      this.loadingService.toggleLoading(false);
     })
   }
 
