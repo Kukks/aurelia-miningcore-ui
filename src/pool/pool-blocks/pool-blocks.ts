@@ -32,6 +32,10 @@ export class PoolBlocks {
 
   }
 
+  public refresh(){
+    this.currentPageNumber= -1;
+  }
+
   public poolIdChanged() {
     this.currentPageNumber = -1;
   }

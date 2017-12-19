@@ -6,6 +6,7 @@ import Chart from "chart.js"
 import * as moment from "moment";
 import {ApiClientService} from "../../resources/services/api-client.service";
 import {LoaderService} from "../../resources/services/loader.service";
+import {HashCalculatorService} from "../../resources/services/hash-calculator.service";
 @autoinject
 export class PoolStats {
   public chartHash: HTMLCanvasElement;
@@ -37,12 +38,21 @@ export class PoolStats {
       },
       options: {
         scales: {
+          yAxes: [
+            {
+              ticks: {
+                stepSize: 1,
+                suggestedMin: 0
+              }
+            }
+          ],
           xAxes: [{
             time: {
               unit: 'hour',
               unitStepSize: 1,
             }
-          }]
+          }],
+
         }
       }
     };
@@ -72,11 +82,25 @@ export class PoolStats {
         ]
       },
       options: {
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              return HashCalculatorService.formatHashRate(tooltipItem.yLabel);
+            }
+          }
+        },
         scales: {
           xAxes: [{
             time: {
               unit: 'hour',
               unitStepSize: 1,
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              callback: (value, index, values)=>{
+                return HashCalculatorService.formatHashRate(value);
+              }
             }
           }]
         }

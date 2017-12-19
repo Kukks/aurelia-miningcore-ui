@@ -28,7 +28,7 @@
     <button if.bind="allowNext " md-button md-waves click.delegate="currentPageNumber = currentPageNumber +1">Load
       more
     </button>
-    <button if.bind="!loading" md-button md-waves click.delegate="currentPageNumber = currentPageNumber +1">Refresh
+    <button if.bind="!loading" md-button md-waves click.delegate="refresh()">Refresh
     </button>
 
 

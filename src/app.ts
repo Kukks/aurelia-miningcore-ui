@@ -9,7 +9,12 @@ export class App implements ConfiguresRouter {
 
   public static Routes: RouteConfig[] = [
     {
-      route: ['/','pools/'],
+      route: "/",
+      name: "home",
+      redirect: "pools/straks1/"
+    },
+    {
+      route: ['pools/'],
       name: 'pools',
       moduleId: PLATFORM.moduleName('./pools/pools'),
       nav: true,

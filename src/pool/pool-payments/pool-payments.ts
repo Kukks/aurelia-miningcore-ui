@@ -30,6 +30,9 @@ export class PoolPayments {
 
   }
 
+  public refresh(){
+    this.currentPageNumber= -1;
+  }
   public poolIdChanged() {
     this.currentPageNumber = -1;
   }
