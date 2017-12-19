@@ -28,6 +28,14 @@ export class App implements ConfiguresRouter {
       nav: false,
       title: 'Pool',
       settings: {}
+    },
+	{
+      route: ['status/'],
+      name: 'status',
+      moduleId: PLATFORM.moduleName('./status/status'),
+      nav: true,
+      title: 'Status',
+      settings: {}
     }
   ];
 
