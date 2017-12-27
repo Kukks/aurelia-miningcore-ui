@@ -1,8 +1,8 @@
-import {ApiClientService} from "../../resources/services/api-client.service";
-import {LoaderService} from "../../resources/services/loader.service";
-import {HttpResponseMessage} from "aurelia-http-client";
-import {bindable, autoinject, observable} from "aurelia-framework";
-import {buildQueryString} from "aurelia-path";
+import { ApiClientService } from "../../resources/services/api-client.service";
+import { LoaderService } from "../../resources/services/loader.service";
+import { HttpResponseMessage } from "aurelia-http-client";
+import { bindable, autoinject, observable } from "aurelia-framework";
+import { buildQueryString } from "aurelia-path";
 
 @autoinject
 export class PoolPayments {
@@ -17,7 +17,7 @@ export class PoolPayments {
 
   public loading: boolean = false;
   public get allowNext(): boolean {
-    if(this.data.length < ((this.currentPageNumber+1) * this.pageSize) ){
+    if (this.data.length < ((this.currentPageNumber + 1) * this.pageSize)) {
       return false;
     }
     return true;
@@ -26,7 +26,7 @@ export class PoolPayments {
   constructor(private apiClientService: ApiClientService, private loadingService: LoaderService) {
 
   }
-  public nextPage(){
+  public nextPage() {
     if (this.loading) {
       return false;
     }
@@ -73,16 +73,12 @@ export class PoolPayments {
       pageSize: this.pageSize,
       page: this.currentPageNumber
     }
-    this.apiClientService.http.get(`pools/${this.poolId}/payments?${buildQueryString(options, true)}`,).then((value: HttpResponseMessage) => {
+    this.apiClientService.http.get(`pools/${this.poolId}/payments?${buildQueryString(options, true)}`, ).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
-        if(this.currentPageNumber ===  0){
+        if (this.currentPageNumber === 0) {
           this.data = [];
         }
-        this.data= [...this.data,...value.content ];
-
-        setTimeout(this.refresh.bind(this),4000);
-
-
+        this.data = [...this.data, ...value.content];
       } else {
         this.error = true;
       }
@@ -90,6 +86,7 @@ export class PoolPayments {
       this.error = true;
     }).then(() => {
       this.loading = false;
+      setTimeout(this.bind.bind(this), 4000);
     })
   }
 

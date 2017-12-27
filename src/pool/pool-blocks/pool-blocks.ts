@@ -84,8 +84,6 @@ export class PoolBlocks {
           this.data = [];
         }
         this.data = [...this.data, ...value.content];
-        setTimeout(this.refresh.bind(this),4000);
-
       } else {
         this.error = true;
       }
@@ -93,6 +91,7 @@ export class PoolBlocks {
       this.error = true;
     }).then(() => {
       this.loading = false;
+      setTimeout(this.bind.bind(this), 4000);
     })
   }
 }

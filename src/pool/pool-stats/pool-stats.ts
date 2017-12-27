@@ -1,16 +1,21 @@
 
-import {HttpResponseMessage} from "aurelia-http-client";
-import {bindable, autoinject, observable, computedFrom} from "aurelia-framework";
-import {TaskQueue} from "aurelia-task-queue";
+import { HttpResponseMessage } from "aurelia-http-client";
+import { bindable, autoinject, observable, computedFrom } from "aurelia-framework";
+import { TaskQueue } from "aurelia-task-queue";
 import Chart from "chart.js"
 import * as moment from "moment";
-import {ApiClientService} from "../../resources/services/api-client.service";
-import {LoaderService} from "../../resources/services/loader.service";
-import {HashCalculatorService} from "../../resources/services/hash-calculator.service";
+import { ApiClientService } from "../../resources/services/api-client.service";
+import { LoaderService } from "../../resources/services/loader.service";
+import { HashCalculatorService } from "../../resources/services/hash-calculator.service";
 @autoinject
 export class PoolStats {
   public chartHash: HTMLCanvasElement;
   public chartMiners: HTMLCanvasElement;
+  @bindable
+  public id: string;
+  @observable()
+  public data?: PoolStats;
+  public error: boolean = false;
 
   public get minerChartConfig() {
     if (!this.data || !this.data.stats) {
@@ -84,7 +89,7 @@ export class PoolStats {
       options: {
         tooltips: {
           callbacks: {
-            label: function(tooltipItem, data) {
+            label: function (tooltipItem, data) {
               return HashCalculatorService.formatHashRate(tooltipItem.yLabel);
             }
           }
@@ -98,7 +103,7 @@ export class PoolStats {
           }],
           yAxes: [{
             ticks: {
-              callback: (value, index, values)=>{
+              callback: (value, index, values) => {
                 return HashCalculatorService.formatHashRate(value);
               }
             }
@@ -129,11 +134,7 @@ export class PoolStats {
     return result;
   }
 
-  @bindable
-  public id: string;
-  @observable()
-  public data?: PoolStats;
-  public error: boolean = false;
+
 
   constructor(private apiClientService: ApiClientService, private loadingService: LoaderService, private taskQueue: TaskQueue) {
 
@@ -144,9 +145,13 @@ export class PoolStats {
   }
 
   public dataChanged() {
-this.handleHashrateChart();
-this.handleMinerChart();
+    this.handleHashrateChart();
+    this.handleMinerChart();
   }
+
+  private minerChart: Chart;
+
+  private hashChart: Chart;
 
   private handleMinerChart() {
     if (!this.minerChartConfig) {
@@ -156,7 +161,10 @@ this.handleMinerChart();
       if (!this.chartMiners) {
         return;
       }
-      new Chart(this.chartMiners, this.minerChartConfig);
+      if(this.minerChart){
+        this.minerChart.destroy();
+      }
+      this.minerChart = new Chart(this.chartMiners, this.minerChartConfig);
     })
   }
 
@@ -168,7 +176,10 @@ this.handleMinerChart();
       if (!this.chartHash) {
         return;
       }
-      new Chart(this.chartHash, this.hashrateChartConfig);
+      if(this.hashChart){
+        this.hashChart.destroy();
+      }
+      this.hashChart = new Chart(this.chartHash, this.hashrateChartConfig);
     })
   }
 
@@ -182,17 +193,16 @@ this.handleMinerChart();
     }
     this.data = null;
     this.error = false;
-    this.apiClientService.http.get(`pools/${this.id}/stats/hourly`,).then((value: HttpResponseMessage) => {
+    this.apiClientService.http.get(`pools/${this.id}/stats/hourly`, ).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         this.data = value.content;
-
-        setTimeout(this.bind.bind(this),20000);
-
       } else {
         this.error = true;
       }
     }).catch(() => {
       this.error = true;
+    }).then(x => {
+      setTimeout(this.bind.bind(this), 5000);
     })
   }
 
