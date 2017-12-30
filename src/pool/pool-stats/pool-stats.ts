@@ -14,8 +14,16 @@ export class PoolStats {
   @bindable
   public id: string;
   @observable()
-  public data?: PoolStats;
+  public data?: PoolStatsData;
   public error: boolean = false;
+
+
+  private poolHashRateData: number[] = [];
+  private poolMinereData: number[] = [];
+  private poolTimeData: string[] = [];
+  private minerChart: Chart;
+  private hashChart: Chart;
+
 
   public get minerChartConfig() {
     if (!this.data || !this.data.stats) {
@@ -25,13 +33,14 @@ export class PoolStats {
     return {
       maintainAspectRatio: true,
       responsive: true,
+      animation: !!this.minerChart,
       type: 'line',
       data: {
-        labels: this.data.stats.map(value => moment(value.created).format("ddd, hA")),
+        labels: this.poolTimeData,
         datasets: [
           {
             label: "Miners",
-            data: this.data.stats.map(value => value.connectedMiners),
+            data: this.poolMinereData,
             backgroundColor: "rgba(151,187,205,0.2)",
             borderColor: "rgba(151,187,205,1)",
             pointColor: "rgba(151,187,205,1)",
@@ -70,13 +79,14 @@ export class PoolStats {
     return {
       maintainAspectRatio: true,
       responsive: true,
+      animation: !!this.hashChart,
       type: 'line',
       data: {
-        labels: this.data.stats.map(value => moment(value.created).format("ddd, hA")),
+        labels: this.poolTimeData,
         datasets: [
           {
             label: "Hashrate",
-            data: this.data.stats.map(value => value.poolHashRate),
+            data: this.poolHashRateData,
             backgroundColor: "rgba(151,187,205,0.2)",
             borderColor: "rgba(151,187,205,1)",
             pointColor: "rgba(151,187,205,1)",
@@ -113,29 +123,6 @@ export class PoolStats {
     };
   }
 
-  public get chartHashData() {
-    if (!this.data || !this.data.stats) {
-      return null;
-    }
-    const result = {
-      datasets: [
-        {
-          label: "Hash Rate",
-          data: this.data.stats.map(value => value.poolHashRate),
-          backgroundColor: "rgba(220,220,220,0.2)",
-          borderColor: "rgba(220,220,220,1)",
-          pointColor: "rgba(220,220,220,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(220,220,220,1)",
-        }
-      ]
-    }
-    return result;
-  }
-
-
-
   constructor(private apiClientService: ApiClientService, private loadingService: LoaderService, private taskQueue: TaskQueue) {
 
   }
@@ -144,14 +131,19 @@ export class PoolStats {
     this.dataChanged();
   }
 
-  public dataChanged() {
+  public dataChanged(newVal?: PoolStatsData, oldVal?: PoolStatsData) {
+
+    if (newVal && oldVal && JSON.stringify(newVal) === JSON.stringify(oldVal)) {
+      return;
+    }
+    this.poolHashRateData.splice(0, this.poolHashRateData.length, ...this.data.stats.map(value => value.poolHashRate));
+    this.poolMinereData.splice(0, this.poolMinereData.length, ...this.data.stats.map(value => value.connectedMiners));
+    this.poolTimeData.splice(0, this.poolTimeData.length, ...this.data.stats.map(value => moment(value.created).format("ddd, hA")));
+
     this.handleHashrateChart();
     this.handleMinerChart();
   }
 
-  private minerChart: Chart;
-
-  private hashChart: Chart;
 
   private handleMinerChart() {
     if (!this.minerChartConfig) {
@@ -161,7 +153,7 @@ export class PoolStats {
       if (!this.chartMiners) {
         return;
       }
-      if(this.minerChart){
+      if (this.minerChart) {
         this.minerChart.destroy();
       }
       this.minerChart = new Chart(this.chartMiners, this.minerChartConfig);
@@ -176,7 +168,7 @@ export class PoolStats {
       if (!this.chartHash) {
         return;
       }
-      if(this.hashChart){
+      if (this.hashChart) {
         this.hashChart.destroy();
       }
       this.hashChart = new Chart(this.chartHash, this.hashrateChartConfig);
@@ -191,7 +183,6 @@ export class PoolStats {
     if (!this.id) {
       return;
     }
-    this.data = null;
     this.error = false;
     this.apiClientService.http.get(`pools/${this.id}/stats/hourly`, ).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
@@ -208,7 +199,7 @@ export class PoolStats {
 
 }
 
-export interface PoolStats {
+export interface PoolStatsData {
   stats: Stat[];
 }
 
