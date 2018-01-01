@@ -1,8 +1,9 @@
-import {ApiClientService} from "../../resources/services/api-client.service";
-import {LoaderService} from "../../resources/services/loader.service";
-import {HttpResponseMessage} from "aurelia-http-client";
-import {bindable, autoinject, observable} from "aurelia-framework";
-import {buildQueryString} from "aurelia-path";
+import { ApiClientService } from "../../resources/services/api-client.service";
+import { LoaderService } from "../../resources/services/loader.service";
+import { HttpResponseMessage } from "aurelia-http-client";
+import { bindable, autoinject, observable } from "aurelia-framework";
+import { buildQueryString } from "aurelia-path";
+import { clearTimeout } from "timers";
 
 @autoinject
 export class PoolBlocks {
@@ -16,7 +17,7 @@ export class PoolBlocks {
   @observable
   public pageSize: number = 5;
   public loading: boolean = false;
-
+  private timeout;
 
   public get allowNext(): boolean {
 
@@ -30,7 +31,7 @@ export class PoolBlocks {
 
   }
 
-  public nextPage(){
+  public nextPage() {
     if (this.loading) {
       return false;
     }
@@ -67,9 +68,15 @@ export class PoolBlocks {
   }
 
   public bind() {
+
     this.loading = true;
     if (!this.poolId) {
       return;
+    }
+    if (this.timeout) {
+      try {
+        clearTimeout(this.timeout);
+      } catch{ }
     }
     this.error = false;
     let options = {
@@ -91,7 +98,7 @@ export class PoolBlocks {
       this.error = true;
     }).then(() => {
       this.loading = false;
-      setTimeout(this.bind.bind(this), 4000);
+      this.timeout = setTimeout(this.refresh.bind(this), 4000);
     })
   }
 }

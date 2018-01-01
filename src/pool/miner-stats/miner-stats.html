@@ -1,9 +1,18 @@
 <template class="miner-stats">
-    <h1 if.bind="error" click.delegate="bind()" class="card-panel red lighten-1 ">Couldn't retrieve data. Wanna try
-      again?</h1>
-    <ul class="collection"  if.bind="data" >
-      <li class="collection-item">Pending Shares: ${data.pendingShares}</li>
-      <li class="collection-item">Pending Balance: ${data.pendingBalance}</li>
-      <li class="collection-item">Total Paid: ${data.totalPaid}</li>
-    </ul>
+  <h1 if.bind="error" click.delegate="bind()" class="card-panel red lighten-1 ">Couldn't retrieve data. Wanna try again?
+  </h1>
+  <ul class="collection" if.bind="data">
+    <li class="collection-item">Pending Shares: ${data.pendingShares}</li>
+    <li class="collection-item">Pending Balance: ${data.pendingBalance}</li>
+    <li class="collection-item">Total Paid: ${data.totalPaid}</li>
+    <li class="collection-item" show.bind="data.lastPayment">Last Payment:
+      <a href.bind="data.lastPaymentLink" target="_blank"> ${moment(data.lastPayment).fromNow()}</a>
+    </li>
+    <li class="collection-item">
+      <div style="width: 100%; min-height: 200px;position: relative;float: left; z-index:1" class="card-panel no-padding">
+
+        <canvas element.ref="chartMiner" style="max-height:350px; max-width: 800px; margin: auto"></canvas>
+      </div>
+    </li>
+  </ul>
 </template>

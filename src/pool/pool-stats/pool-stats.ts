@@ -136,6 +136,9 @@ export class PoolStats {
     if (newVal && oldVal && JSON.stringify(newVal) === JSON.stringify(oldVal)) {
       return;
     }
+    if(!this.data || !this.data.stats){
+      return;
+    }
     this.poolHashRateData.splice(0, this.poolHashRateData.length, ...this.data.stats.map(value => value.poolHashRate));
     this.poolMinereData.splice(0, this.poolMinereData.length, ...this.data.stats.map(value => value.connectedMiners));
     this.poolTimeData.splice(0, this.poolTimeData.length, ...this.data.stats.map(value => moment(value.created).format("ddd, hA")));

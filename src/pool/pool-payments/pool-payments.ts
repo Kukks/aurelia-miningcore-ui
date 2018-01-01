@@ -23,6 +23,8 @@ export class PoolPayments {
     return true;
   }
 
+  private timeout;
+
   constructor(private apiClientService: ApiClientService, private loadingService: LoaderService) {
 
   }
@@ -67,6 +69,11 @@ export class PoolPayments {
     if (!this.poolId) {
       return;
     }
+    if (this.timeout) {
+      try {
+        clearTimeout(this.timeout);
+      } catch{ }
+    }
     this.loading = true;
     this.error = false;
     let options = {
@@ -86,7 +93,7 @@ export class PoolPayments {
       this.error = true;
     }).then(() => {
       this.loading = false;
-      setTimeout(this.bind.bind(this), 4000);
+      this.timeout = setTimeout(this.refresh.bind(this), 4000);
     })
   }
 

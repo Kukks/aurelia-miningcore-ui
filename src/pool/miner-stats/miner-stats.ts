@@ -1,7 +1,11 @@
+import * as moment from "moment";
 import { ApiClientService } from "../../resources/services/api-client.service";
 import { LoaderService } from "../../resources/services/loader.service";
 import { HttpResponseMessage } from "aurelia-http-client";
-import { bindable, autoinject } from "aurelia-framework";
+import { bindable, autoinject, TaskQueue } from "aurelia-framework";
+import Chart from "chart.js"
+import { HashCalculatorService } from "resources/services/hash-calculator.service";
+
 
 @autoinject
 export class MinerStats {
@@ -11,8 +15,63 @@ export class MinerStats {
   public address: string;
   public data?: PoolMinerStat;
   public error: boolean = false;
+  public chartMiner: HTMLCanvasElement;
 
-  constructor(private apiClientService: ApiClientService, private loadingService: LoaderService) {
+  private charthart: Chart;
+
+  public get minerChartConfig() {
+    if (!this.data || !this.data.hashrate) {
+      return null;
+    }
+
+    return {
+      maintainAspectRatio: true,
+      responsive: true,
+      animation: !!this.charthart,
+      type: 'line',
+      data: {
+        labels: this.data.hashrate.reverse().map(x => moment(x.created).fromNow()),
+        datasets: [
+          {
+            label: "Hashrate",
+            data: this.data.hashrate.reverse().map(x => x.hashrate / 2),
+            backgroundColor: "rgba(151,187,205,0.2)",
+            borderColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)"
+          }
+        ]
+      },
+      options: {
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem, data) {
+              return HashCalculatorService.formatHashRate(tooltipItem.yLabel);
+            }
+          }
+        },
+        scales: {
+          xAxes: [{
+            time: {
+              unit: 'hour',
+              unitStepSize: 1,
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              callback: (value, index, values) => {
+                return HashCalculatorService.formatHashRate(value);
+              }
+            }
+          }]
+        }
+      }
+    };
+  }
+
+  constructor(private apiClientService: ApiClientService, private loadingService: LoaderService, private taskQueue: TaskQueue) {
 
   }
 
@@ -35,10 +94,25 @@ export class MinerStats {
     this.error = false;
     return this.apiClientService.http.get(`pools/${this.id}/miner/${this.address}/stats`, ).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
+        if (value && this.data && JSON.stringify(value) === JSON.stringify(this.data)) {
+          return;
+        }
         this.data = value.content;
+
+        this.taskQueue.queueMicroTask(() => {
+          if (!this.chartMiner) {
+            return;
+          }
+          if (this.charthart) {
+            this.charthart.destroy();
+          }
+          this.charthart = new Chart(this.chartMiner, this.minerChartConfig);
+        })
       } else {
         this.error = true;
       }
+
+
     }).catch(() => {
       this.error = true;
     }).then(x => {
@@ -51,4 +125,13 @@ export interface PoolMinerStat {
   pendingShares: number;
   pendingBalance: number;
   totalPaid: number;
+  lastPayment: string;
+  lastPaymentLink: string;
+  hashrate: PoolMinerStatHashrate[];
+}
+export interface PoolMinerStatHashrate {
+  poolId: string;
+  miner: string;
+  hashrate: number;
+  created: string;
 }
