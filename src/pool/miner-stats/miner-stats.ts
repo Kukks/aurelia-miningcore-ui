@@ -34,7 +34,7 @@ export class MinerStats {
         datasets: [
           {
             label: "Hashrate",
-            data: this.data.hashrate.reverse().map(x => x.hashrate / 2),
+            data: this.data.hashrate.reverse().map(x => x.hashrate ),
             backgroundColor: "rgba(151,187,205,0.2)",
             borderColor: "rgba(151,187,205,1)",
             pointColor: "rgba(151,187,205,1)",
