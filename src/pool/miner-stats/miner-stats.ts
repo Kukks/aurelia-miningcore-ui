@@ -34,7 +34,7 @@ export class MinerStats {
         datasets: [
           {
             label: "Hashrate",
-            data: this.data.hashrate.reverse().map(x => x.hashrate ),
+            data: this.data.hashrate.reverse().map(x => x.hashrate),
             backgroundColor: "rgba(151,187,205,0.2)",
             borderColor: "rgba(151,187,205,1)",
             pointColor: "rgba(151,187,205,1)",
@@ -106,7 +106,9 @@ export class MinerStats {
           if (this.charthart) {
             this.charthart.destroy();
           }
-          this.charthart = new Chart(this.chartMiner, this.minerChartConfig);
+          if (this.minerChartConfig) {
+            this.charthart = new Chart(this.chartMiner, this.minerChartConfig);
+          }
         })
       } else {
         this.error = true;
@@ -128,10 +130,19 @@ export interface PoolMinerStat {
   lastPayment: string;
   lastPaymentLink: string;
   hashrate: PoolMinerStatHashrate[];
+  performance: PoolMinerPerformance;
 }
 export interface PoolMinerStatHashrate {
   poolId: string;
   miner: string;
   hashrate: number;
   created: string;
+}
+export interface PoolMinerPerformance {
+  created: string;
+  workers: { [index: string]: PoolMinerWorkerPerformance };
+}
+export interface PoolMinerWorkerPerformance {
+  hashrate: number;
+  sharesPerSecond: number;
 }

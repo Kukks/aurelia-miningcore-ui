@@ -8,7 +8,19 @@
     <li class="collection-item" show.bind="data.lastPayment">Last Payment:
       <a href.bind="data.lastPaymentLink" target="_blank"> ${moment(data.lastPayment).fromNow()}</a>
     </li>
-    <li class="collection-item">
+    <li class="collection-item" if.bind="data.performance">
+      Peformance (from around ${moment(data.performance.created).fromNow()})
+      <ul class="collection">
+        <li class="collection-item" repeat.for="worker of data.performance.workers | objectKeys">
+          <b>Worker ${$index+1}
+            <template if.bind="worker">- ${worker}</template>
+          </b>
+          <br/> Hashrate: ${HashCalculatorService.formatHashRate(data.performance.workers[worker].hashrate)}
+          <br/>Shares per second: ${data.performance.workers[worker].sharesPerSecond}
+        </li>
+      </ul>
+    </li>
+    <li class="collection-item" if.bind="minerChartConfig">
       <div style="width: 100%; min-height: 200px;position: relative;float: left; z-index:1" class="card-panel no-padding">
 
         <canvas element.ref="chartMiner" style="max-height:350px; max-width: 800px; margin: auto"></canvas>

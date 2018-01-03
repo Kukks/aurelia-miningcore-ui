@@ -10,7 +10,7 @@ export class HashCalculatorService {
       i++;
     } while (hashrate > 1024 && i < HashCalculatorService.HashRateUnits.length - 1);
 
-    return Math.round( Math.abs(hashrate)) + HashCalculatorService.HashRateUnits[i];
+    return Math.abs(hashrate).toFixed(decimalPoints) + HashCalculatorService.HashRateUnits[i];
   }
 
   public static formatDifficulty(difficulty: number) {
