@@ -38,23 +38,30 @@
               Algorithm: Lyra2Rev2
             </li>
             <li class="collection-item">
-              <a href="http://cryptovore.com/2017/11/25/straks-how-to-mine-nvidia-gpu/" target="_blank">Nvidia Gpus Straks guide </a> or
-              <br/>
-              <code>ccminer-x64-75 -a lyra2v2 -o stratum+tcp://5.189.159.254:4500 -u SP5BMTez7GyCzn1AmtdkpkwrsNJsnqukf8</code>
+              Nvidia Mining
+              <ul>
+                <li>
+                  <a href="http://cryptovore.com/2017/11/25/straks-how-to-mine-nvidia-gpu/" target="_blank">Cryptovore's Nvidia Gpu Mining Guide </a>
+                </li>
+                <li> Download ccminer from
+                  <a href="https://github.com/tpruvot/ccminer/releases" target="_blank">here</a>
+                </li>
+                <li>
+                  <code>ccminer-x64-75 -a lyra2v2 -o stratum+tcp://gozopool.com:4500 -u SP5BMTez7GyCzn1AmtdkpkwrsNJsnqukf8</code>
+                </li>
+              </ul>
             </li>
             <li class="collection-item">
               AMD Mining
               <ul>
                 <li>
-                  Download and
-                  <b>check the readme file for instructions</b> from
-                  <a target="_blank" href="https://drive.google.com/open?id=1FiCUGeNvEymCGra0-L9CULjgvY8iGaCh">here </a>
+                  Download mkxminer 3.0 from
+                  <a href="https://ufile.io/2qxjh" target="_blank">here</a> or
+                  <a href="https://filebin.net/vpcamn8hmh5i16sm/mkxminer201.zip" target="_blank">here</a>
                 </li>
-                <li>If you get the error "'java' is not recognized as an internal or external command, operable program or batch
-                  file.", you need to install Java from
-                  <a href="https://www.java.com/en/download/manual.jsp" target="_blank">here</a>
+                <li>
+                  <code>mkxminer.exe --exitsick --asm -o stratum+tcp://gozopool.com:4500 -u SP5BMTez7GyCzn1AmtdkpkwrsNJsnqukf8 -p x -I 23</code>
                 </li>
-                <li>If you don't want to read the readme file, run `update-hosts.bat` AS AN ADMINISTRATOR and then fix your user in run.bat and then run it.</li>
               </ul>
             </li>
           </ul>
