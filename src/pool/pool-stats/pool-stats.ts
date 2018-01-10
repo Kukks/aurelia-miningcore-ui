@@ -187,7 +187,7 @@ export class PoolStats {
       return;
     }
     this.error = false;
-    this.apiClientService.http.get(`pools/${this.id}/stats/hourly`, ).then((value: HttpResponseMessage) => {
+    this.apiClientService.http.get(`pools/${this.id}/performance`, ).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         this.data = value.content;
       } else {

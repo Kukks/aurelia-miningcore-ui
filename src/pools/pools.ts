@@ -100,6 +100,7 @@ export interface Pool {
   addressInfoLink: string;
   poolStats: PoolStats;
   networkStats: NetworkStats;
+  topMiners: {miner:string, hashrate:number, sharesPerSecond:number};
 }
 
 export interface PoolsApiResult {

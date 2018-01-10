@@ -18,6 +18,16 @@
     </li>
     <li class="collection-item">
       <div class="row">
+        <div class="col s12 m6 ">
+          Pool Payout Minimum Balance:
+        </div>
+        <a href.bind="pool.addressInfoLink" target="_blank" class="col  s12 m6 truncate">
+          ${pool.paymentProcessing.minimumPayment}
+        </a>
+      </div>
+    </li>
+    <li class="collection-item">
+      <div class="row">
         <div class="col  s12 m6 ">
           Pool Stats
         </div>
@@ -30,7 +40,7 @@
         </div>
       </div>
     </li>
-    <!-- <li class="collection-item">
+    <li class="collection-item">
       <div class="row">
         <div class="col  s12 m6 ">
           Network Stats
@@ -45,7 +55,7 @@
           </ul>
         </div>
       </div>
-    </li> -->
+    </li>
     <li class="collection-item row" repeat.for="port of pool.ports | objectKeys">
       <div class="col  s12 m6 "><code>-o stratum+tcp://${baseUrl}:${port} -u &gtWALLET_ADDRESS&lt</code>
       </div>

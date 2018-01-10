@@ -1,9 +1,9 @@
-import {autoinject} from "aurelia-framework";
-import {observable} from "aurelia-binding";
-import {Pool} from "../pools/pools";
-import {LoaderService} from "../resources/services/loader.service";
-import {ApiClientService} from "../resources/services/api-client.service";
-import {HttpResponseMessage} from "aurelia-http-client";
+import { autoinject } from "aurelia-framework";
+import { observable } from "aurelia-binding";
+import { Pool, PoolsApiResult } from "../pools/pools";
+import { LoaderService } from "../resources/services/loader.service";
+import { ApiClientService } from "../resources/services/api-client.service";
+import { HttpResponseMessage } from "aurelia-http-client";
 
 @autoinject
 export class PoolPage {
@@ -31,10 +31,11 @@ export class PoolPage {
     }
     // this.data = null;
     this.error = false;
-    return this.apiClientService.http.get(`pools/${this.id}`,).then((value: HttpResponseMessage) => {
+    const id = this.id;
+    return this.apiClientService.http.get(`pools`, ).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
-        this.data = value.content;
-        setTimeout(this.idChanged.bind(this),2000);
+        this.data = (value.content as PoolsApiResult).pools.find(x => x.id === id);
+        setTimeout(this.idChanged.bind(this), 2000);
       } else {
         this.error = true;
       }
@@ -43,8 +44,8 @@ export class PoolPage {
     });
   }
 
-  public minerChanged(){
-    this.minerNew= this.miner;
+  public minerChanged() {
+    this.minerNew = this.miner;
   }
 }
 
