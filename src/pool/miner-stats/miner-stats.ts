@@ -92,7 +92,7 @@ export class MinerStats {
       return;
     }
     this.error = false;
-    return this.apiClientService.http.get(`pools/${this.id}/miner/${this.address}/stats`, ).then((value: HttpResponseMessage) => {
+    return this.apiClientService.http.get(`pools/${this.id}/miners/${this.address}`, ).then((value: HttpResponseMessage) => {
       if (value.isSuccess) {
         if (value && this.data && JSON.stringify(value) === JSON.stringify(this.data)) {
           return;
