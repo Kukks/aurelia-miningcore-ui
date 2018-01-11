@@ -15,7 +15,7 @@
           <b>Worker ${$index+1}
             <template if.bind="worker">- ${worker}</template>
           </b>
-          <br/> Hashrate: ${HashCalculatorService.formatHashRate(data.performance.workers[worker].hashrate)}
+          <br/> Hashrate: ${HashCalculatorService.formatHashRate(data.performance.workers[worker].hashrate * 2)}
           <br/>Shares per second: ${data.performance.workers[worker].sharesPerSecond}
         </li>
       </ul>

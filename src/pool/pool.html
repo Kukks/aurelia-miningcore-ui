@@ -26,13 +26,16 @@
           <li md-waves="color: primary;">
             <a href="#poolInfo">Info</a>
           </li>
-          <li md-waves="color: primary;" if.bind="data.pool.coin.type ==='STAK'">
+          <li md-waves="color: primary;" if.bind="data.coin.type ==='STAK'">
             <a href="#gettingStarted">guide</a>
+          </li>
+          <li md-waves="color: primary;">
+            <a href="#topminers">Top miners</a>
           </li>
         </ul>
 
         <pool-info pool.bind="data" id="poolInfo" class="tab-content"></pool-info>
-        <div id="gettingStarted" class="tab-content" if.bind="data.pool.coin.type ==='STAK'">
+        <div id="gettingStarted" class="tab-content" if.bind="data.coin.type ==='STAK'">
           <ul class="collection">
             <li class="collection-item">
               Algorithm: Lyra2Rev2
@@ -64,6 +67,17 @@
                 </li>
               </ul>
             </li>
+          </ul>
+
+        </div>
+
+        <div id="topminers" class="tab-content" >
+          <ul class="collection">
+            <li class="collection-item" repeat.for="topMiner of data.topMiners">
+             <b>${topMiner.miner} </b>
+             <div class="secondary-content">${HashCalculatorService.formatHashRate(topMiner.hashrate * 2)} with ${topMiner.sharesPerSecond} sps</div>
+            </li>
+            
           </ul>
 
         </div>
