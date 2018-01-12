@@ -100,7 +100,7 @@ export class PoolStats {
         tooltips: {
           callbacks: {
             label: function (tooltipItem, data) {
-              return HashCalculatorService.formatHashRate(tooltipItem.yLabel);
+              return HashCalculatorService.formatHashRate(tooltipItem.yLabel*2);
             }
           }
         },
@@ -114,7 +114,7 @@ export class PoolStats {
           yAxes: [{
             ticks: {
               callback: (value, index, values) => {
-                return HashCalculatorService.formatHashRate(value);
+                return HashCalculatorService.formatHashRate(value*2);
               }
             }
           }]

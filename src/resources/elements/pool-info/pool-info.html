@@ -34,7 +34,7 @@
         <div class="col  s12 m6 ">
           <ul>
             <li>Miners: ${pool.poolStats.connectedMiners}</li>
-            <li>Hashrate: ${HashCalculatorService.formatHashRate(pool.poolStats.poolHashRate)}</li>
+            <li>Hashrate: ${HashCalculatorService.formatHashRate(pool.poolStats.poolHashRate*2)}</li>
             <li>Valid Shares Per Second: ${pool.poolStats.validSharesPerSecond}</li>
           </ul>
         </div>
